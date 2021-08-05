@@ -28,7 +28,7 @@ class Digrafo:
         return self.matriz_adjacente[vertice].count(1)  # Grau
 
     def mostra(self):
-        print("Vértices com suas respectivas arestas orientadas")
+        
 
         for i in range(1, self.vertices):
             print(f"{i}: ", end='')
