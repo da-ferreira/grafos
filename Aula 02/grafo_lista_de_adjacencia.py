@@ -11,11 +11,11 @@ class Grafo:
     def __init__(self, vertices):
         self.vertices = vertices + 1  # Os indices começaram a partir de 1
         self.arestas = 0
-        self.lista = [[] for i in range(self.vertices)]
+        self.lista = [set() for i in range(self.vertices)]  # Sets para na hora de comparar não gerar problemas
     
     def insere(self, u, v):
-        self.lista[u].append(v)
-        self.lista[v].append(u)
+        self.lista[u].add(v)
+        self.lista[v].add(u)
         self.arestas += 1
 
     def remove(self, u, v):
@@ -38,7 +38,21 @@ class Grafo:
         return True
 
 
-if __name__ == "__main__":
+""" Le os dados de um grafo de um arquivo e implementa em um grafo. """
+def ler_arquivo_grafo():
+    with open('C:/Users/Home/Desktop/CC - 4°/Teoria dos Grafos/Grafos/Aula 02/grafo.txt', 'r') as arquivo:
+        vertices = int(arquivo.readline())
+        arestas = int(arquivo.readline())
+        grafo = Grafo(vertices - 1)
+
+        for i in range(arestas):
+            u, v = map(int, arquivo.readline().split())
+            grafo.insere(u, v)
+        
+        grafo.mostra()
+
+
+def testa_grafo_iguais():
     grafo1 = Grafo(5)
     arestas_g1 = [(1, 2), (1, 3), (2, 3), (2, 4), (2, 5), (3, 4), (4, 5)]
 
@@ -57,3 +71,9 @@ if __name__ == "__main__":
     print(f'O grafo 1 é igual ao grafo 2? {grafo1.ehIgual(grafo2)}')
     print(f'O grafo 2 é igual ao grafo 1? {grafo2.ehIgual(grafo1)}')
     print(f'O grafo 1 é igual ao grafo 3? {grafo1.ehIgual(grafo3)}')
+
+
+if __name__ == "__main__":
+    #testa_grafo_iguais()
+    ler_arquivo_grafo()
+      
