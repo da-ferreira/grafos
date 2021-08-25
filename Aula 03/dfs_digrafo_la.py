@@ -1,6 +1,7 @@
 
 """
 Digrafo com lista de adjacência, com implementação do algoritmo DFS (Depth-First Search), Busca em Profundidade
+Consumo de tempo para a lista de adjacência do DFS é O(V + A)
 """
 
 class Digrafo:
@@ -37,10 +38,6 @@ class Digrafo:
 
         return t in vertices_visitados
 
-    """ Exibe o caminho (caso exista) de s para t no digrafo """
-    def exibe_caminho(self, s, t):
-        pass
-
 
 if __name__ == "__main__":
     digrafo = Digrafo(6)
@@ -56,6 +53,4 @@ if __name__ == "__main__":
 
     print(f"\nExiste um caminho de 3 para 1 no digrafo? {digrafo.existe_caminho(3, 1)}")
     print(f"Existe um caminho de 5 para 4 no digrafo? {digrafo.existe_caminho(5, 4)}\n")
-
-    print(digrafo.exibe_caminho(3, 1))
-      
+       
