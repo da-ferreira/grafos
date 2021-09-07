@@ -1,9 +1,8 @@
 
 class Digrafo:
     """
-    Digrafo com lista de adjacencia com implementacao do algoritmo para verificar
-    se o grafo tem ciclo utilizando a funcao de encontrar um caminho entre dois vertices.
-    O consumo de tempo do algoritmo, na lista de adjacencia, é O(E(V + E)),
+    Digrafo com lista de adjacencia com o algoritmo para verificar se o grafo tem ciclo utilizando pilha.
+    O consumo de tempo do algoritmo, na lista de adjacencia, é O(V + E),
     onde E é o conjunto de arestas e V o conjunto de vertices.
     """
 
@@ -23,30 +22,29 @@ class Digrafo:
 
     def tem_ciclo(self):
         """ Verifica se tem ciclo no grafo. """
-        
+
+        visitados = [False] * self.vertices
+        esta_na_pilha = [False] * self.vertices
+
         for vertice in range(self.vertices):
-            for u in self.lista_adjacente[vertice]:
-                if self.tem_caminho(u, vertice):
+            if not visitados[vertice]:
+                if self.visita(vertice, visitados, esta_na_pilha):
                     return True
-        
+
         return False
     
-    def tem_caminho(self, s, t):
-        """ Verifica se ha um caminho do vertice s para o t no grafo. """
-        
-        visitados = [False] * self.vertices
-        self.dfs_visita(s, visitados)
-
-        return visitados[t]  # Se t está na lista de visitados de do DFS de s então tem caminho s-t
-
-    def dfs_visita(self, u, visitados):
-        """ Executa a busca em profundidade. """
-        
+    def visita(self, u, visitados, esta_na_pilha):
         visitados[u] = True
+        esta_na_pilha[u] = True
 
         for w in self.lista_adjacente[u]:
             if not visitados[w]:
-                self.dfs_visita(w, visitados)
+                self.visita(w, visitados, esta_na_pilha)
+            elif esta_na_pilha[w]:
+                return True
+        
+        esta_na_pilha[u] = False
+        return False
 
 
 if __name__ == "__main__":
@@ -58,4 +56,4 @@ if __name__ == "__main__":
 
     digrafo.mostrar()
     print(f"Tem ciclos no grafo? {digrafo.tem_ciclo()}")
-    
+ 
