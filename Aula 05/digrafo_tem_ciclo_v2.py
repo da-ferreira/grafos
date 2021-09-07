@@ -39,7 +39,8 @@ class Digrafo:
 
         for w in self.lista_adjacente[u]:
             if not visitados[w]:
-                self.visita(w, visitados, esta_na_pilha)
+                if self.visita(w, visitados, esta_na_pilha):
+                    return True
             elif esta_na_pilha[w]:
                 return True
         
@@ -56,4 +57,15 @@ if __name__ == "__main__":
 
     digrafo.mostrar()
     print(f"Tem ciclos no grafo? {digrafo.tem_ciclo()}")
+
+    print('-' * 30)
+
+    digrafo_2 = Digrafo(6)
+    arestas_2 = [(0, 2), (0, 4), (0, 3), (2, 1), (3, 4), (1, 5), (5, 2)]
+
+    for aresta in arestas_2:
+        digrafo_2.inserir(aresta[0], aresta[1])
+
+    digrafo_2.mostrar()
+    print(f"Tem ciclos no grafo? {digrafo_2.tem_ciclo()}")
  
