@@ -72,3 +72,4 @@ if __name__ == "__main__":
     digrafo.classificacao(1, 5)
     digrafo.classificacao(7, 1)
     digrafo.classificacao(0, 3)
+    digrafo.classificacao(0, 1)
