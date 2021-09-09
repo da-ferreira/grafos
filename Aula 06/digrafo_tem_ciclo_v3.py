@@ -10,6 +10,7 @@ class Digrafo:
     def __init__(self, vertices): 
         self.vertices = vertices
         self.lista_adjacente = [set() for i in range(self.vertices)]
+        self.tempo = 0  # Guarda o tempo de visita do i-esimo vértice
     
     def inserir(self, u, w):
         if w not in self.lista_adjacente[u]:
@@ -20,10 +21,30 @@ class Digrafo:
             print(f"{i}: {', '.join(str(x) for x in self.lista_adjacente[i])}")
 
     def tem_ciclo(self):
-        pass
+        d = [-1] * self.vertices  # Lista dos tempos de descoberta de cada vértice 
+        f = [-1] * self.vertices  # Lista dos tempos de finalização de cada vértice
+
+        for vertice in range(self.vertices):
+            if d[vertice] == -1:  # se o vértice ainda não foi visitado
+                if self.tem_arco_de_retorno(vertice, d, f):
+                    return True
+        
+        return False
 
     def tem_arco_de_retorno(self, u, d, f):
-        pass
+        d[u] = self.tempo
+        self.tempo += 1
+
+        for w in self.lista_adjacente[u]:
+            if d[w] == -1:  
+                if self.tem_arco_de_retorno(w, d, f):
+                    return True
+            elif f[w] == -1:
+                return True
+        
+        f[u] = self.tempo
+        self.tempo += 1
+        return False
         
 
 if __name__ == "__main__":
