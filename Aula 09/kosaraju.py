@@ -17,7 +17,7 @@ class Digrafo:
         """ 
         Algoritmo de Kosaraju (1978) obtém os componentes fortemente conexos do grafo orientado. 
         1. Execute DFS(G) para obter f[v] para v ∈ V
-        2. Obter o grafo transposto GT
+        2. Obter o grafo transposto GT (é passado por parametro)
         3. Execute DFS(GT) considerando os vértices em ordem decrescente de f[v].
         4. Devolva os conjuntos de vértices de cada árvore da floresta de busca em profundidade obtida
         """
@@ -29,7 +29,7 @@ class Digrafo:
             if not visitados[vertice]:
                 self.DFS(vertice, ordem, visitados)
         
-        print(ordem)
+        return self.DFS_transponto(digrafo_transposto, ordem)
 
     
     def DFS(self, u, ordem, visitados):
@@ -44,13 +44,35 @@ class Digrafo:
         ordem.append(u)
 
 
-    def DFS_transponto(self, digrafo_transposto, u, ordem, visitados):
+    def DFS_transponto(self, digrafo_transposto, ordem):
         """ 
-        Executa a busca em profundidade considerando os vertices em ordem decrescente no vetor de tempos de
-        finalização e retorna os conjuntos de vértices obtidos que são os componentes fortemente conexos do digrafo.
+        Executa a busca em profundidade (iterativa) considerando os vertices em ordem decrescente no vetor de tempos
+        de finalização e retorna os conjuntos de vértices obtidos que são os componentes fortemente conexos do digrafo.
         """
-        pass
-    
+        
+        visitados = [False] * self.vertices
+        componentes = []
+
+        for vertice in range(len(ordem) - 1, -1, -1):
+            if not visitados[ordem[vertice]]:
+                pilha = [ordem[vertice]]
+                visitados[ordem[vertice]] = True
+                componente = set()  # SCC (Componente fortemente conexo)
+
+                while len(pilha) > 0:
+                    u = pilha.pop() 
+
+                    for w in digrafo_transposto.lista_adjacente[u]:
+                        if not visitados[w]:
+                            visitados[w] = True
+                            pilha.append(w)
+                    
+                    componente.add(u)
+
+                componentes.append(componente)
+        
+        return componentes
+
 
 if __name__ == "__main__":
     digrafo = Digrafo(8)
@@ -64,9 +86,8 @@ if __name__ == "__main__":
     print("Grafo G:")
     digrafo.mostrar()
     
-    print("Grafo transposto G:")
+    print("\nGrafo transposto G:")
     digrafo_transposto.mostrar()
 
-    print("Componentes fortemente conexos:")
-    print(digrafo.kosaraju(digrafo_transposto))
+    print(f"\nComponentes fortemente conexos: {digrafo.kosaraju(digrafo_transposto)}\n")
   
