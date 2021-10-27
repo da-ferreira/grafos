@@ -15,6 +15,10 @@ class Grafo:
             print(f"{i}: {', '.join(str(x) for x in self.lista_adjacente[i])}")
 
     def pontes(self):
+        """ Explicação do algoritmo O(V + E) para detectar pontes em 'Detector de pontes - algoritmo O(V + E).md' """
+        pass
+
+    def DFS(self):
         pass
 
 
