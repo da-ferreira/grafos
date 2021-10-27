@@ -2,6 +2,9 @@
 class Grafo:
     """ Grafo utilizando lista de adjacencia. """
 
+    tempo = 0
+    INFINITO = float("inf")
+
     def __init__(self, vertices): 
         self.vertices = vertices
         self.lista_adjacente = [[] for _ in range(self.vertices)]
@@ -16,10 +19,34 @@ class Grafo:
 
     def pontes(self):
         """ Explicação do algoritmo O(V + E) para detectar pontes em 'Detector de pontes - algoritmo O(V + E).md' """
-        pass
+        
+        Grafo.tempo = 0
+        pre = [-1] * self.vertices
+        low = [Grafo.INFINITO] * self.vertices
+        pai = [-1] * self.vertices
 
-    def DFS(self):
-        pass
+        for vertice in range(self.vertices):
+            if pre[vertice] == -1:
+                pai[vertice] = vertice
+                self.DFS(vertice, pre, low, pai)
+
+    def DFS(self, v, pre, low, pai):
+        Grafo.tempo += 1
+        pre[v] = Grafo.tempo
+        low[v] = Grafo.tempo
+
+        for w in self.lista_adjacente[v]:
+            if pre[w] == -1:
+                pai[w] = v
+                self.DFS(w, pre, low, pai)
+
+                low[v] = min(low[v], low[w])
+
+                if low[w] > pre[v]:  # ou low[w] == pre[w]
+                    print(f"Há uma ponte em ({v}, {w})")
+
+            elif w != pai[v]:
+                low[v] = min(low[v], pre[w])
 
 
 if __name__ == "__main__":
@@ -31,4 +58,6 @@ if __name__ == "__main__":
 
     grafo.mostrar()
 
-    print(f"\nPontes do grafo: {grafo.pontes()}")
+    print("\nPontes do grafo:")
+    grafo.pontes()
+      
