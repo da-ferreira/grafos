@@ -42,6 +42,7 @@ class Grafo:
                     pontes.add((vertice, aresta))
                 
                 self.lista_adjacente[vertice].insert(0, aresta)
+                self.lista_adjacente[aresta].insert(0, vertice)
         
         return pontes
 
@@ -81,4 +82,4 @@ if __name__ == "__main__":
     grafo.mostrar()
     
     print(f"\nPontes do grafo: {grafo.pontes()}")
- 
+    

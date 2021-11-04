@@ -3,15 +3,21 @@ class Grafo:
     """ Grafo utilizando lista de adjacencia. """
 
     def __init__(self, vertices): 
-        self.vertices = vertices
-        self.lista_adjacente = [set() for _ in range(self.vertices)]
-        self.grau = [0] * self.vertices  # Grau dos vertices
+        self.vertices = [x for x in range(vertices)]
+        self.lista_adjacente = [[] for _ in self.vertices]
+        self.grau = [0] * len(self.vertices)  # Grau dos vertices
     
     def inserir(self, u, w):
-        self.lista_adjacente[u].add(w)
-        self.lista_adjacente[w].add(u)
+        self.lista_adjacente[u].append(w)
+        self.lista_adjacente[w].append(u)
         self.grau[u] += 1
-        self.grau[w] += 1   
+        self.grau[w] += 1
+    
+    def remover(self, u, w):
+        self.lista_adjacente[u].remove(w)
+        self.lista_adjacente[w].remove(u)
+        self.grau[u] -= 1
+        self.grau[w] -= 1   
 
     def mostrar(self):
         for i in range(len(self.lista_adjacente)):
@@ -37,21 +43,16 @@ class Grafo:
 
         trilha = []  
         self.mostra_trilha_euleriana(vertice, trilha)
+        return trilha
 
     def mostra_trilha_euleriana(self, vertice, trilha):
-        trilha.append(vertice)
+        pass
 
-        if len(self.lista_adjacente[vertice]) == 0:
-            return
-        
-        for w in self.lista_adjacente[vertice]:
-            if not self.eh_ponte(vertice, w):  # Se não é uma ponte
-                self.remove(vertice, w)
-                
+    def eh_ponte(self, u, v):
+        pass
 
-
-
-
+    def eh_conexo(self):
+        pass
 
 
 if __name__ == "__main__":
@@ -62,5 +63,8 @@ if __name__ == "__main__":
         grafo.inserir(aresta[0], aresta[1])
 
     grafo.mostrar()
+    print(grafo.vertices)
 
     print(f"\nTrilha euleriana encontrada pelo algoritmo de Fleury: {grafo.fleury()}")
+    grafo.mostrar()
+    print(grafo.vertices)
