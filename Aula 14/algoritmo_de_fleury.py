@@ -22,9 +22,36 @@ class Grafo:
         O problema do carteiro chinês pode ser resolvido pelo Algoritmo de Fleury, já que ele encontra
         uma trilha de Euler no grafo euleriano. Este algoritmo constrói uma trilha sujeita à condição
         de que, em cada passo, a aresta escolhida para compor a trilha não seja de corte no grafo 
-        restante, a menos que não haja alternativa.
+        restante, a menos que não haja alternativa. Algoritmo detalhado em 'Aula 14 > Algoritmo de Fleury.md'
         """
-        pass
+        
+        impares = [vertice for vertice in self.grau if vertice % 2 == 1]  # Todos os vértices de grau ímpar
+
+        if len(impares) > 2:
+            return "Não é um grafo euleriano"
+        
+        if len(impares) == 0:  # Trilha euleriana fechada
+            vertice = 0  # Começa pelo vértice 0
+        else:
+            vertice = impares[0]  # Trilha euleriana aberta
+
+        trilha = []  
+        self.mostra_trilha_euleriana(vertice, trilha)
+
+    def mostra_trilha_euleriana(self, vertice, trilha):
+        trilha.append(vertice)
+
+        if len(self.lista_adjacente[vertice]) == 0:
+            return
+        
+        for w in self.lista_adjacente[vertice]:
+            if not self.eh_ponte(vertice, w):  # Se não é uma ponte
+                self.remove(vertice, w)
+                
+
+
+
+
 
 
 if __name__ == "__main__":
