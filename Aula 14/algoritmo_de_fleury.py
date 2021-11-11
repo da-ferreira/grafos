@@ -3,9 +3,9 @@ class Grafo:
     """ Grafo utilizando lista de adjacencia. """
 
     def __init__(self, vertices): 
-        self.vertices = [x for x in range(vertices)]
-        self.lista_adjacente = [[] for _ in self.vertices]
-        self.grau = [0] * len(self.vertices)  # Grau dos vertices
+        self.qtd_vertices = vertices
+        self.lista_adjacente = [[] for _ in range(self.qtd_vertices)]
+        self.grau = [0] * self.qtd_vertices  # Grau dos vertices
     
     def inserir(self, u, w):
         self.lista_adjacente[u].append(w)
@@ -20,7 +20,7 @@ class Grafo:
         self.grau[w] -= 1   
 
     def mostrar(self):
-        for i in range(len(self.lista_adjacente)):
+        for i in range(self.qtd_vertices):
             print(f"{i}: {', '.join(str(x) for x in self.lista_adjacente[i])}")
 
     def fleury(self):
@@ -63,8 +63,6 @@ if __name__ == "__main__":
         grafo.inserir(aresta[0], aresta[1])
 
     grafo.mostrar()
-    print(grafo.vertices)
 
     print(f"\nTrilha euleriana encontrada pelo algoritmo de Fleury: {grafo.fleury()}")
     grafo.mostrar()
-    print(grafo.vertices)
