@@ -11,18 +11,20 @@
     * v = impares[0]  _# escolha um vértice de grau ímpar_
 * mostra-trilha-euleriana(G, v)
 
-### mostra-trilha-euleriana(G, v)
+### trilha-euleriana(G, v)
 * insere-na-trilha(v)
 * se tamanho(adj[v]) == 0 então
 	* retorne
 * para w adjacente ao vértice v faça
     * se eh-ponte(G, v, w) = Falso faça
-        * remove aresta(G, v, w)
-        * mostra-trilha-euleriana(G, w)
+        * remove-aresta(G, v, w)
+        * trilha-euleriana(G, w)
         * retorne
         
 ### eh-ponte(G, v, w)
-* remove aresta(G, v, w)
+* se tamanho(adj[j]) == 1 então
+    * retorne Falso
+* remove-aresta(G, v, w)
 * se eh-conexo(G) == Verdadeiro então
     * resultado = Falso
 * senão

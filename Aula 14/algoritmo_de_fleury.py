@@ -6,6 +6,7 @@ class Grafo:
         self.qtd_vertices = vertices
         self.lista_adjacente = [[] for _ in range(self.qtd_vertices)]
         self.grau = [0] * self.qtd_vertices  # Grau dos vertices
+        self.vertices = set()
     
     def inserir(self, u, w):
         self.lista_adjacente[u].append(w)
@@ -41,18 +42,65 @@ class Grafo:
         else:
             vertice = impares[0]  # Trilha euleriana aberta
 
+        for u in range(self.qtd_vertices):
+            self.vertices.add(u)
+
         trilha = []  
-        self.mostra_trilha_euleriana(vertice, trilha)
+        self.trilha_euleriana(vertice, trilha)
         return trilha
 
-    def mostra_trilha_euleriana(self, vertice, trilha):
-        pass
+    def trilha_euleriana(self, vertice, trilha):
+        trilha.append(vertice)
+
+        if len(self.lista_adjacente[vertice]) == 0:
+            return
+
+        for w in self.lista_adjacente[vertice]:
+            if not self.eh_ponte(vertice, w):
+                self.remover(vertice, w)
+
+                if self.grau[vertice] == 0:
+                    self.vertices.remove(vertice)
+                
+                if self.grau[w] == 0:
+                    self.vertices.remove(w)
+
+                self.trilha_euleriana(w, trilha)
+                return 
 
     def eh_ponte(self, u, v):
-        pass
+        if len(self.lista_adjacente[u]) == 1:
+            return False
+        
+        self.remover(u, v)
+
+        if not self.eh_conexo():
+            resultado = True
+        else:
+            resultado = False
+
+        self.inserir(u, v)
+        return resultado
 
     def eh_conexo(self):
-        pass
+        visitados = [False] * self.qtd_vertices
+        componentes = 0
+
+        for vertice in self.vertices:
+            if not visitados[vertice]:
+                pilha = [vertice]
+                visitados[vertice] = True
+                componentes += 1
+
+                while len(pilha) > 0:
+                    u = pilha.pop()
+
+                    for w in self.lista_adjacente[u]:  # Visita todos os filhos do vértice tirado da pilha
+                        if not visitados[w]:
+                            pilha.append(w)
+                            visitados[w] = True
+        
+        return componentes == 1
 
 
 if __name__ == "__main__":
@@ -64,5 +112,4 @@ if __name__ == "__main__":
 
     grafo.mostrar()
 
-    print(f"\nTrilha euleriana encontrada pelo algoritmo de Fleury: {grafo.fleury()}")
-    grafo.mostrar()
+    print(f"\nTrilha euleriana encontrada pelo algoritmo de Fleury: {' - '.join(str(i) for i in grafo.fleury())}\n")
