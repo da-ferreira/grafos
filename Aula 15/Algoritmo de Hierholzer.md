@@ -1,7 +1,7 @@
 # Algoritmo de Hierholzer O(E)
 
-> Entrada: Um grafo euleriano  
-> Saída: Uma trilha de Euler completa
+> Entrada: Um grafo com uma trilha euleriana  
+> Saída: Uma trilha de Euler (fechada ou não)
   
 * Todas as arestas iniciam-se desmarcadas.
 * Escolha um vértice inicial v e insira na pilha.
