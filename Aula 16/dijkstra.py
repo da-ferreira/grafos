@@ -7,6 +7,9 @@ class MinHeap:
         self.heap = [0]
         self.n = 0
 
+    def vazio(self):
+        return self.n == 0
+
     def pai(self, i):
         return i // 2
 
@@ -76,18 +79,36 @@ class Digrafo:
     def dijkstra(self, s):
         """
         Resolve o problema do caminho mínimo de fonte única em um grafo não-direcionado com pesos nas arestas.
-        Complexidade usando MinHeap: O(E log(V)), onde E: número de arestas, V: número de vértices.
+        Complexidade usando MinHeap: O(E log V), onde E: número de arestas, V: número de vértices.
 
         :param s: vértice inicial.
         :return: Um vetor de distancia (mínima) do vértice inicial s para todos os vértices e o vetor de pai.
         """
         
-        return -1, -1
+        distancia = [float('inf')] * self.qtd_vertices
+        pai = [None] * self.qtd_vertices
+
+        distancia[s] = 0
+        heap = MinHeap()
+        heap.inserir((0, s))  # Insere (distancia, vértice)
+
+        while not heap.vazio():
+            _, v = heap.extrair_minimo()
+
+            for w, peso_de_v_para_w in self.lista_adjacente[v]:
+                if distancia[w] > (distancia[v] + peso_de_v_para_w):
+                    distancia[w] = distancia[v] + peso_de_v_para_w
+                    pai[w] = v
+                    
+                    heap.inserir((distancia[w], w))  # Insere (distancia, vértice)
+        
+        return distancia, pai
 
 
 if __name__ == "__main__":
     digrafo = Digrafo(5)
-    arcos = [(0, 1, 10), (0, 2, 3), (1, 2, 1), (1, 3, 2), (2, 1, 4), (2, 3, 8), (2, 4, 2), (3, 4, 7), (4, 3, 9)]
+    # (u, v, peso de u para v)
+    arcos = [(0, 1, 10), (0, 2, 3), (1, 2, 1), (1, 3, 2), (2, 1, 4), (2, 3, 8), (2, 4, 2), (3, 4, 7), (4, 3, 9)] 
 
     for arco in arcos:
         digrafo.inserir(arco)
