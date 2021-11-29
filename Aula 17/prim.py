@@ -1,4 +1,7 @@
 
+CINZA = 0
+PRETO = 1
+
 class MinHeap:
     """ Implementa uma fila de prioridades MinHeap. """
     pass
@@ -74,7 +77,7 @@ class Grafo:
 
     def mostrar(self):
         for i in range(self.qtd_vertices):
-            print(f"{i}: {', '.join(f'(aresta={x[0]}, peso={x[1]})' for x in self.adjacente[i])}")
+            print(f"{i}: {', '.join(f'({x[0]}, peso={x[1]})' for x in self.adjacente[i])}")
 
     def prim(self, s):
         """
@@ -84,6 +87,37 @@ class Grafo:
         :return: Um vetor de chaves e o vetor de pais.
         """
 
+        chave = [float('inf')] * self.qtd_vertices
+        cor = [CINZA] * self.qtd_vertices
+        pai = [-1] * self.qtd_vertices
+
+        chave[s] = 0
+        heap = MinHeap()
+        heap.inserir((0, s))  # Insere (chave, vértice)
+
+        while not heap.vazio():
+            _, u = heap.extrair_minimo()
+
+            for v, peso_de_u_para_v in self.adjacente[u]:
+                if cor[v] == CINZA and chave[v] > peso_de_u_para_v:
+                    chave[v] = peso_de_u_para_v
+                    pai[v] = u
+                    heap.inserir((chave[v], v))  # Insere (chave, vértice)
+            
+            cor[u] = PRETO
+        
+        return chave, pai
+
 
 if __name__ == "__main__":
-    pass
+    # (u, v, peso de u para v)
+    arcos = [(0, 1, 7), (0, 2, 10), (0, 3, 15), (1, 4, 9), (1, 5, 12), (1, 6, 5), (2, 6, 8), (2, 7, 3), (5, 6, 6), (6, 7, 14)]
+    grafo = Grafo(8)
+
+    for arco in arcos:
+        grafo.inserir(arco)
+
+    grafo.mostrar()
+
+    print(f"\nVetor de chave e de pai: {grafo.prim(0)}")
+ 
